@@ -47,3 +47,7 @@ O modelo lógico detalha as tabelas, atributos, tipos de dados, chaves primária
 - **disciplina** 1:N **matricula** (Uma disciplina pode ter várias matrículas de alunos).
 
 O DER correspondente está disponível em `docs/der_normalizado.md` e `docs/DER.JPG`.
+
+## Análise de Concorrência e Propriedades ACID
+
+Em transações simultâneas para alterar a mesma nota, o **Isolamento (ACID)** impede interferências, fazendo cada transação ver o banco isoladamente (evitando leituras sujas ou fantasmas). Os **Locks** aplicam bloqueios exclusivos na linha afetada, forçando a segunda transação a aguardar o commit da primeira, garantindo consistência sem corrupção de dados.

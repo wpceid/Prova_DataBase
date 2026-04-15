@@ -12,7 +12,20 @@ Em Engenharia de Dados, usar schemas como `academico` e `seguranca` em vez de `p
 
 ### Modelo Lógico
 
-O modelo lógico detalha as tabelas, atributos, tipos de dados, chaves primárias (PK) e estrangeiras (FK), além dos relacionamentos.
+O modelo lógico detalha as 5 tabelas normalizadas em 3NF, atributos, tipos de dados, chaves primárias (PK) e estrangeiras (FK), além dos relacionamentos entre entidades.
+
+#### Tabela: academico.professor
+
+- **ID_Professor** (VARCHAR(10), PK): Identificador único do professor.
+- **Nome_Professor** (VARCHAR(255)): Nome completo do professor.
+- **ativo** (BOOLEAN, DEFAULT TRUE): Flag para soft delete.
+
+#### Tabela: academico.turma
+
+- **ID_Turma** (VARCHAR(10), PK): Identificador único da turma/ciclo.
+- **Ciclo_Calendario** (VARCHAR(20)): Ciclo calendário (ex.: 2026/1).
+- **Status** (VARCHAR(50)): Status da turma (Ativo, Concluído, etc).
+- **ativo** (BOOLEAN, DEFAULT TRUE): Flag para soft delete.
 
 #### Tabela: academico.aluno
 
@@ -22,7 +35,6 @@ O modelo lógico detalha as tabelas, atributos, tipos de dados, chaves primária
 - **Endereco_Usuario** (VARCHAR(255)): Endereço do aluno.
 - **Matricula_Operador_Pedagogico** (VARCHAR(50)): Matrícula do operador pedagógico responsável.
 - **Data_Ingresso** (DATE): Data de ingresso do aluno.
-- **Ciclo_Calendario** (VARCHAR(20)): Ciclo calendário (ex.: 2026/1).
 - **ativo** (BOOLEAN, DEFAULT TRUE): Flag para soft delete.
 
 #### Tabela: academico.disciplina
@@ -30,21 +42,32 @@ O modelo lógico detalha as tabelas, atributos, tipos de dados, chaves primária
 - **Cod_Servico_Academico** (VARCHAR(10), PK): Código único da disciplina.
 - **Nome_Disciplina** (VARCHAR(255)): Nome da disciplina.
 - **Carga_H** (INTEGER): Carga horária em horas.
-- **Nome_Docente** (VARCHAR(255)): Nome do docente responsável.
+- **ID_Professor** (VARCHAR(10), FK para academico.professor.ID_Professor): Identificador do professor responsável.
 - **ativo** (BOOLEAN, DEFAULT TRUE): Flag para soft delete.
 
 #### Tabela: academico.matricula
 
 - **ID_Matricula** (INTEGER, FK para academico.aluno.ID_Matricula): Identificador do aluno.
 - **Cod_Servico_Academico** (VARCHAR(10), FK para academico.disciplina.Cod_Servico_Academico): Código da disciplina.
+- **ID_Turma** (VARCHAR(10), FK para academico.turma.ID_Turma): Identificador da turma.
 - **Score_Final** (DECIMAL(4,2)): Nota final do aluno na disciplina.
 - **ativo** (BOOLEAN, DEFAULT TRUE): Flag para soft delete.
-- **PK composta**: (ID_Matricula, Cod_Servico_Academico)
+- **PK composta**: (ID_Matricula, Cod_Servico_Academico, ID_Turma)
 
 #### Relacionamentos
 
-- **aluno** 1:N **matricula** (Um aluno pode se matricular em várias disciplinas).
+- **professor** 1:N **disciplina** (Um professor pode lecionar várias disciplinas).
 - **disciplina** 1:N **matricula** (Uma disciplina pode ter várias matrículas de alunos).
+- **turma** 1:N **matricula** (Uma turma pode ter várias matrículas).
+- **aluno** 1:N **matricula** (Um aluno pode se matricular em várias disciplinas por turmas diferentes).
+
+#### Verificação de Normalização (3NF)
+
+All tabelas cumprem as **3 Formas Normais**:
+
+- **1NF**: Todos os atributos contêm apenas valores atômicos, sem multivalorados.
+- **2NF**: Cada atributo não-chave depende totalmente da chave primária (não há dependências parciais).
+- **3NF**: Não há dependências transitivas entre atributos não-chave. As FKs representam referências, não dados derivados.
 
 O DER correspondente está disponível em `docs/der_normalizado.md` e `docs/DER.JPG`.
 

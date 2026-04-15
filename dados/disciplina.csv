@@ -1,0 +1,7 @@
+Cod_Servico_Academico,Nome_Disciplina,Carga_H,ID_Professor
+ADS101,Banco de Dados,80,P001
+ADS102,Engenharia de Software,80,P002
+ADS103,Algoritmos,60,P004
+ADS104,Redes de Computadores,60,P005
+ADS105,Sistemas Operacionais,60,P003
+ADS106,Estruturas de Dados,80,P006
